@@ -1,4 +1,4 @@
-from numpy import e, tanh, log, linspace, sinh, abs, vstack, array, zeros
+from numpy import e, tanh, log, linspace, sinh, abs, vstack, array, zeros, cosh
 from pylab import show, plot, legend, xlabel, ylabel
 from scipy.integrate import solve_bvp
 
@@ -21,7 +21,7 @@ def bc(ya, yb):
 def SymmetryPlanes():
     x = linspace(-1,1,100)
     
-    phiDebyeHuckle = abs(phi0*sinh(k*x)/sinh(k))
+    phiDebyeHuckle = phi0*cosh(k*x)/cosh(k)
     y_a = zeros((2, x.size))
 
     res_a = solve_bvp(fun, bc, x, y_a)
@@ -34,6 +34,6 @@ def SymmetryPlanes():
     legend()
     show()
 
-phi0 = 4.
-k = 5.
+phi0 =6.
+k = 4.
 SymmetryPlanes()
