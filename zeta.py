@@ -1,5 +1,5 @@
 from numpy import e, tanh, log, linspace, sinh, abs, vstack, array, zeros, cosh
-from pylab import show, plot, legend, xlabel, ylabel
+from pylab import show, plot, legend, xlabel, ylabel, title
 from scipy.integrate import solve_bvp
 
 def InfinitePlane():
@@ -30,8 +30,9 @@ def SymmetryPlanes():
     plot(x,phiDebyeHuckle,label='Debye-Huckle linearization')
     plot(x,y_plot_a, label = 'Poisson-Boltzmann equation solution')
     xlabel('x')
-    ylabel(r'$ varphi $')
+    ylabel(r'$\varphi(x)$')
     legend()
+    title('Potential distribution across paralles plates \n'+r'$\varphi = k^2 \sinh(\varphi), \varphi(\pm 1) = \zeta, \zeta = {}, k = {}$'.format(phi0, k))
     show()
 
 phi0 =6.
