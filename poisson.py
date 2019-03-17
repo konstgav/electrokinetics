@@ -3,14 +3,22 @@
 
 from ngsolve import *
 from netgen.geom2d import unit_square
+from netgen.geom2d import SplineGeometry
 
-def SolvePoisson():
+def SolvePoisson(width, height):
     ngsglobals.msg_level = 1
 
     # generate a triangular mesh of mesh-size 0.2
-    mesh = Mesh(unit_square.GenerateMesh(maxh=0.02))
-
-    # H1-conforming finite element space
+    #mesh = Mesh(unit_square.GenerateMesh(maxh=0.02))
+    geo = SplineGeometry()
+    p1,p2,p3,p4 = [ geo.AppendPoint(x,y) for x,y in [(0,0), (width,0), (width, height), (0, height)] ]
+    geo.Append (["line", p1, p2],bc=1)
+    geo.Append (["line", p2, p3],bc=2)
+    geo.Append (["line", p3, p4],bc=3)
+    geo.Append (["line", p4, p1],bc=4)
+    mesh = Mesh(geo.GenerateMesh(maxh=0.02))
+    
+# H1-conforming finite element space
     fes = H1(mesh, order=3, dirichlet=[1,2,3,4])
 
     # define trial- and test-functions
@@ -34,8 +42,5 @@ def SolvePoisson():
 
     # plot the solution (netgen-gui only)
     Draw (gfu)
-
-    exact = 16*x*(1-x)*y*(1-y)
-    print ("L2-error:", sqrt (Integrate ( (gfu-exact)*(gfu-exact), mesh)))
 
     return gfu, mesh
